@@ -1,3 +1,7 @@
+include "provider" {
+  path   = find_in_parent_folders("provider.tf")
+}
+
 include "region" {
   path   = find_in_parent_folders("region.hcl")
   expose = true
