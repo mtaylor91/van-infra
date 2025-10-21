@@ -1,5 +1,10 @@
+include "region" {
+  path   = find_in_parent_folders("region.hcl")
+  expose = true
+}
+
 locals {
-  region = basename(dirname(find_in_parent_folders("region.hcl")))
+  region = include.region.locals.name
   name   = "infra-${local.region}"
   cidr   = "10.200.0.0/16"
 
@@ -10,16 +15,6 @@ locals {
 
 terraform {
   source = "git::git@github.com:terraform-aws-modules/terraform-aws-vpc?ref=v6.4.0"
-}
-
-generate "provider" {
-  path      = "provider.tf"
-  if_exists = "overwrite"
-  contents  = <<EOF
-provider "aws" {
-  region = "${local.region}"
-}
-EOF
 }
 
 inputs = {
