@@ -29,6 +29,10 @@ inputs = {
   instance_type               = local.instance_type
   create_security_group       = true
   source_dest_check           = false
+  user_data                   = templatefile("user-data.txt", {
+    hostname                  = local.name
+    TAILSCALE_AUTH_KEY        = get_env("TAILSCALE_AUTH_KEY")
+  })
 
   security_group_ingress_rules = {
     allow_ingress_ipv4_ssh = {
